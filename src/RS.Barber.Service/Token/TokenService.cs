@@ -31,7 +31,7 @@ namespace RS.Barber.Application.Token
             var securitykey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JwtSettings:Key"]));
             var credentials = new SigningCredentials(securitykey, SecurityAlgorithms.HmacSha256);
 
-            var token = new JwtSecurityToken(issuer: issuer, audience: audience, expires: expires, signingCredentials: credentials, claims: claims);
+            var token = new JwtSecurityToken(expires: expires, signingCredentials: credentials, claims: claims);
             var tokenHandler = new JwtSecurityTokenHandler();
             var stringToken = tokenHandler.WriteToken(token);
 

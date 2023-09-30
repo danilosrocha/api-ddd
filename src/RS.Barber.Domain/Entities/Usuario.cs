@@ -1,21 +1,18 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using RS.Barber.Domain.Enums;
+using RS.Barber.Domain.Validators;
 
 namespace RS.Barber.Domain.Entities
 {
-    public class Usuario : IdentityUser<Guid>
+    public class Usuario : IdentityUser
     {
         public Usuario()
         {
-            Id = Guid.NewGuid();
             ValidationResult = new Dictionary<string, string>();
         }
 
-        public string Password { get; set; }
         public string Cpf { get; set; }
         public TipoUsuario Tipo { get; set; }
-        public bool Ativo { get; set; }
-        public bool Excluido { get; set; }
         public IDictionary<string, string> ValidationResult { get; set; }
 
         public bool EhValido()

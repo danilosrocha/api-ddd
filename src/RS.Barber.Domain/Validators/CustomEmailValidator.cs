@@ -1,25 +1,23 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using RS.Barber.Domain.Entities;
-using System.Collections.Generic;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace RS.Barber.Domain.Validators
 {
-    public class CustomPhoneNumberValidator<TUser> : IUserValidator<TUser> where TUser : Usuario
+    public class CustomEmailValidator<TUser> : IUserValidator<TUser> where TUser : Usuario
     {
         public Task<IdentityResult> ValidateAsync(UserManager<TUser> manager, TUser user)
         {
             var errors = new List<IdentityError>();
 
-            var phoneRegex = new Regex(@"^\(\d{2}\) \d{5}-\d{4}$"); 
-
-            if (!phoneRegex.IsMatch(user.PhoneNumber))
+            // Verificar se o e-mail é válido usando uma expressão regular
+            var emailRegex = new Regex(@"^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$");
+            if (!emailRegex.IsMatch(user.Email))
             {
                 errors.Add(new IdentityError
                 {
-                    Code = "InvalidPhoneNumber",
-                    Description = "O número de telefone não está no formato válido (XX) XXXXX-XXXX."
+                    Code = "InvalidEmail",
+                    Description = "O endereço de e-mail não é válido."
                 });
             }
 
@@ -32,3 +30,4 @@ namespace RS.Barber.Domain.Validators
         }
     }
 }
+

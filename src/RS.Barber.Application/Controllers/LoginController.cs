@@ -28,12 +28,20 @@ namespace RS.Barber.Application.Controllers
         [HttpPost]
         public async Task<IActionResult> Post(LoginInput input)
         {
+
+
             var resultado = await _signInManager.PasswordSignInAsync(input.Email, input.Password, false, lockoutOnFailure: false);
 
-            var token = await _loginService.Login(input);
-            if (token.IsNullOrEmpty()) return Unauthorized("O login falhou");
+            if(resultado.Succeeded)
+            {
+                var userCurrent = await _userManager.FindByEmailAsync(input.Email);
 
-            return Ok(token);
+                var token = await _loginService.Login(userCurrent);
+
+                return Ok(token);
+            }
+
+            return Unauthorized("Falha no login!");            
         }
     }
 }

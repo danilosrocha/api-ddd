@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using RS.Barber.Domain.Entities;
 using RS.Barber.Domain.Interfaces;
 using RS.Barber.Domain.Models;
@@ -24,18 +25,54 @@ namespace RS.Barber.Application.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(Guid id)
         {
-            var usuario = await _usuarioService.ObterPorIdAsync(id);
+            try
+            {
+                var usuario = await _userManager.GetUserByIdAsync(id);
 
-            return Ok(usuario);
+                if (usuario == null) return NotFound();
+
+                return Ok(usuario);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
         }
 
         // POST api/<UsuarioController>
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] UsuarioInput input)
         {
-            var resultado = await _userManager.CreateUserAsync(input, input.Password);
+            try
+            {
+                var resultado = await _userManager.CreateUserAsync(input, input.Password);
 
-            return Ok(resultado);
+                if (resultado.IsNullOrEmpty()) return BadRequest();
+
+                return Ok(resultado);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> Put(Guid Id, UsuarioInput input)
+        {
+            try
+            {
+                var resultado = await _userManager.UpdateUserAsync(Id, input);
+
+                return Ok(resultado);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
         }
 
 

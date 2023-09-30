@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RS.Barber.Domain.Dtos;
+using RS.Barber.Domain.Enums;
 using RS.Barber.Domain.Interfaces;
 using System.Text.Json;
 
@@ -21,7 +22,7 @@ namespace RS.Barber.Application.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Vip")]
+        //[Authorize(Roles =)]
         public async Task<IActionResult> Post([FromBody] ClienteInput clienteInput)
         {
             try

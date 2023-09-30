@@ -1,7 +1,5 @@
-﻿using RS.Barber.Application.Token;
+﻿using RS.Barber.Domain.Entities;
 using RS.Barber.Domain.Interfaces;
-using RS.Barber.Domain.Models;
-using RS.Barber.Infra.Data.Repositories;
 
 namespace RS.Barber.Service
 {
@@ -16,15 +14,8 @@ namespace RS.Barber.Service
             _usuarioService = usuarioService;
         }
 
-        public async Task<string> Login(LoginInput input)
+        public async Task<string> Login(Usuario usuario)
         {
-            var usuario = await (input.Email != null ? _usuarioService.ObterPorEmailAsync(input.Email) : _usuarioService.ObterPorCpfAsync(input.Cpf));
-
-            if (usuario == null || usuario.Password != input.Password)
-            {
-                return "";
-            }
-
             var token = _tokenService.GerarToken(usuario);
             return token;
         }
